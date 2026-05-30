@@ -3,11 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 // IMPORTANDO AS ROTAS
-import routeClientes from "./src/routes/clienteRoutes.js";
-import routeCategoria from "./src/routes/categoriaRoutes.js";
-import routeEditora from "./src/routes/editoraRoutes.js";
-import routeCompra from "./src/routes/compraRoutes.js";
-import routeLivro from "./src/routes/livroRoutes.js";
+// import routeClientes from "./src/routes/clienteRoutes.js";
+// import routeCategoria from "./src/routes/categoriaRoutes.js";
+// import routeEditora from "./src/routes/editoraRoutes.js";
+// import routeCompra from "./src/routes/compraRoutes.js";
+// import routeLivro from "./src/routes/livroRoutes.js";
 
 
 // CARREGAR AS VARIAVEIS DE AMBIENTE
@@ -23,11 +23,11 @@ app.use(cors());
 
 
 // REGISTRANDO AS ROTAS
-app.use("/cliente", routeClientes);
-app.use("/categoria", routeCategoria);
-app.use("/compra", routeCompra);
-app.use("/editora", routeEditora);
-app.use("/livro", routeLivro);
+// app.use("/cliente", routeClientes);
+// app.use("/categoria", routeCategoria);
+// app.use("/compra", routeCompra);
+// app.use("/editora", routeEditora);
+// app.use("/livro", routeLivro);
 
 
 app.listen(PORT, () => {
