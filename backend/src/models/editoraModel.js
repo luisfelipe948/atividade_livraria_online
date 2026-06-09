@@ -1,47 +1,48 @@
 import pool from "../db/database.js";
 
-class EditoraModel {
-  async showEditora() {
+class EditorasModel {
+  async showEditoras() {
     const [rows] = await pool.execute("SELECT * FROM editoras;");
     return rows;
-
   }
 
   async getEditoraById(id) {
-    const [row] = await pool.execute("SELECT * FROM editoras WHERE id_editora = ?;", [id]);
+    const [rows] = await pool.execute(
+      "SELECT * FROM editoras WHERE id_editora = ?;",
+      [id]
+    );
+    return rows;
   }
 
-
   async createEditora(editoraData) {
-    const { nome, email, telefone, data_cadastro } = editoraData;
+    const { nome, email, telefone } = editoraData;
     const [row] = await pool.execute(
-      "INSERT INTO editoras (nome, email, telefone, data_cadastro) VALUES (?, ?, ?, ?);",
-      [nome, email, telefone, data_cadastro],
+      "INSERT INTO editoras (nome, email, telefone) VALUES (?, ?, ?);",
+      [nome, email, telefone]
     );
-
     return row;
   }
 
-  async updateEditora (id, editoraData) {
-    const { nome, email, telefone, data_cadastro } = editoraData;
-
+  async updateEditora(id, editoraData) {
+    const { nome, email, telefone } = editoraData;
     const [row] = await pool.execute(
-    
-      "UPDATE editoras SET nome = ?, email = ?, telefone = ?, WHERE id_editora = ?;,"
-      [nome, email, telefone, data_cadastro, id],
+      `UPDATE editoras SET
+        nome     = ?,
+        email    = ?,
+        telefone = ?
+       WHERE id_editora = ?;`,
+      [nome, email, telefone, id]
     );
-
     return row;
   }
 
   async deleteEditora(id) {
     const [row] = await pool.execute(
-      "DELETE FROM editoras WHERE id_editora = ?",
-      [id],
+      "DELETE FROM editoras WHERE id_editora = ?;",
+      [id]
     );
-
     return row;
   }
 }
 
-export default new EditoraModel();
+export default new EditorasModel();

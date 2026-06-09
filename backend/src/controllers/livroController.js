@@ -1,0 +1,56 @@
+import livrosModel from "../models/livroModel.js";
+
+class LivrosController {
+  async showLivros(req, res) {
+    try {
+      const livros = await livrosModel.showLivros();
+      res.json(livros);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async getLivroById(req, res) {
+    try {
+      const { id } = req.params;
+      const livro = await livrosModel.getLivroById(id);
+      if (livro.length === 0) {
+        return res.status(404).json({ message: "Livro não encontrado." });
+      }
+      res.json(livro[0]);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async createLivro(req, res) {
+    try {
+      const result = await livrosModel.createLivro(req.body);
+      res.status(201).json({ message: "Livro criado com sucesso.", id: result.insertId });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async updateLivro(req, res) {
+    try {
+      const { id } = req.params;
+      await livrosModel.updateLivro(id, req.body);
+      res.json({ message: "Livro atualizado com sucesso." });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async deleteLivro(req, res) {
+    try {
+      const { id } = req.params;
+      await livrosModel.deleteLivro(id);
+      res.json({ message: "Livro deletado com sucesso." });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+}
+
+export default new LivrosController();

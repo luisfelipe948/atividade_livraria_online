@@ -1,12 +1,12 @@
-import express from "express";
-import compraController from "../controller/compraController.js";
+import { Router } from "express";
+import comprasController from "../controllers/compraController.js";
 
-const routeCompra = express.Router();
+const router = Router();
 
-routeCompra.get("/", compraController.listarCompras);
-routeCompra.get("/:id", compraController.buscarCompraPorId);
-routeCompra.post("/", compraController.criarCompra);
-routeCompra.put("/:id", compraController.atualizarCompra);
-routeCompra.delete("/:id", compraController.deletarCompra);
+router.get("/",    (req, res) => comprasController.showCompras(req, res));
+router.get("/:id", (req, res) => comprasController.getCompraById(req, res));
+router.post("/",   (req, res) => comprasController.createCompra(req, res));
+router.put("/:id", (req, res) => comprasController.updateCompra(req, res));
+router.delete("/:id", (req, res) => comprasController.deleteCompra(req, res));
 
-export default routeCompra;
+export default router;

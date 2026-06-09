@@ -1,36 +1,25 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import "dotenv/config";
 
-// IMPORTANDO AS ROTAS
-import routeCliente from "./src/routes/clienteRoutes.js";
-import routeCategoria from "./src/routes/categoriaRoutes.js";
-import routeEditora from "./src/routes/editoraRoutes.js";
-import routeCompra from "./src/routes/compraRoutes.js";
-import routeLivro from "./src/routes/livroRoutes.js";
+import clienteRoutes   from "./src/routes/clienteRoutes.js";
+import categoriaRoutes from "./src/routes/categoriaRoutes.js";
+import editoraRoutes   from "./src/routes/editoraRoutes.js";
+import livroRoutes     from "./src/routes/livroRoutes.js";
+import compraRoutes    from "./src/routes/compraRoutes.js";
 
+const app  = express();
+const PORT = process.env.PORT || 3001 ;
 
-// CARREGAR AS VARIAVEIS DE AMBIENTE
-dotenv.config()
-
-// GARANTINDO QUE O SERVIDOR TENHA PORTA MESMO QUE NÃO ESTEJA DEFINIDO NO .ENV
-const PORT = process.env.PORT || 3000; 
-
-const app = express();
-
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-
-// REGISTRANDO AS ROTAS
-app.use("/cliente", routeCliente);
-app.use("/categoria", routeCategoria);
-app.use("/compra", routeCompra);
-app.use("/editora", routeEditora);
-app.use("/livro", routeLivro);
-
+app.use("/clientes",   clienteRoutes);
+app.use("/categorias", categoriaRoutes);
+app.use("/editoras",   editoraRoutes);
+app.use("/livros",     livroRoutes);
+app.use("/compras",    compraRoutes);
 
 app.listen(PORT, () => {
-    return console.log(`Servidor rodando http://localhost:${PORT}`);
-  });
-  
+  console.log(`Servidor rodando na porta ${PORT}`);
+}); 

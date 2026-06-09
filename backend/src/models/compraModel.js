@@ -1,80 +1,55 @@
-
 import pool from "../db/database.js";
 
 class ComprasModel {
-
   async showCompras() {
-    const [rows] = await pool.execute(`
-      SELECT 
-        c.id_compra,
-        c.qtde,
-        c.valor,
-        c.desconto,
-        c.data_compra,
-        cli.nome AS cliente,
-        l.titulo AS livro
-      FROM compras c
-      JOIN clientes cli ON c.id_cliente = cli.id_cliente
-      JOIN livros l ON c.id_livro = l.id_livro;
-    `);
-
+    const [rows] = await pool.execute(
+      `SELECT cp.*,
+              l.titulo        AS livro,
+              cl.nome         AS cliente
+       FROM compras cp
+       JOIN livros   l  ON cp.id_livro   = l.id_livro
+       JOIN clientes cl ON cp.id_cliente = cl.id_cliente;`
+    );
     return rows;
   }
-
 
   async getCompraById(id) {
     const [rows] = await pool.execute(
       "SELECT * FROM compras WHERE id_compra = ?;",
       [id]
     );
-
-    return rows[0];
+    return rows;
   }
-
 
   async createCompra(compraData) {
-    const { qtde, valor, desconto, data_compra, id_livro, id_cliente } = compraData;
-
-    const [rows] = await pool.execute(
-      `
-      INSERT INTO compras 
-      (qtde, valor, desconto, data_compra, id_livro, id_cliente)
-      VALUES (?, ?, ?, ?, ?, ?);
-      `,
-      [qtde, valor, desconto, data_compra, id_livro, id_cliente]
+    const { qtde, valor, desconto, id_livro, id_cliente } = compraData;
+    const [row] = await pool.execute(
+      "INSERT INTO compras (qtde, valor, desconto, id_livro, id_cliente) VALUES (?, ?, ?, ?, ?);",
+      [qtde, valor, desconto, id_livro, id_cliente]
     );
-
-    return rows;
+    return row;
   }
-
 
   async updateCompra(id, compraData) {
-    const { qtde, valor, desconto, data_compra, id_livro, id_cliente } = compraData;
-
-    const [rows] = await pool.execute(
-      `
-      UPDATE compras SET
-        qtde = ?,
-        valor = ?,
-        desconto = ?,
-        data_compra = ?,
-        id_livro = ?,
+    const { qtde, valor, desconto, id_livro, id_cliente } = compraData;
+    const [row] = await pool.execute(
+      `UPDATE compras SET
+        qtde       = ?,
+        valor      = ?,
+        desconto   = ?,
+        id_livro   = ?,
         id_cliente = ?
-      WHERE id_compra = ?;
-      `,
-      [qtde, valor, desconto, data_compra, id_livro, id_cliente, id]
+       WHERE id_compra = ?;`,
+      [qtde, valor, desconto, id_livro, id_cliente, id]
     );
-
-    return rows;
+    return row;
   }
-
 
   async deleteCompra(id) {
     const [row] = await pool.execute(
       "DELETE FROM compras WHERE id_compra = ?;",
       [id]
     );
-
     return row;
   }
 }
